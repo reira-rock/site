@@ -44,7 +44,7 @@
             z-index: 40;
         }
 
-        /* ヒーローセクション：背景画像を hero.jpg に指定 */
+        /* ヒーローセクション */
         .hero-bg {
             position: relative;
             background: linear-gradient(to bottom, rgba(5, 5, 5, 0) 0%, rgba(5, 5, 5, 0.5) 70%, var(--dark-bg) 100%),
@@ -69,7 +69,7 @@
         }
 
         .hero-title {
-            font-size: clamp(5rem, 18vw, 14rem);
+            font-size: clamp(4rem, 15vw, 12rem);
             line-height: 0.8;
             background: linear-gradient(180deg, #fff 40%, #888 100%);
             -webkit-background-clip: text;
@@ -81,7 +81,7 @@
         .hero-subtitle {
             font-family: 'Orbitron', sans-serif;
             font-weight: 700;
-            font-size: clamp(0.8rem, 2.5vw, 1.5rem);
+            font-size: clamp(0.7rem, 2vw, 1.2rem);
             letter-spacing: 0.6em;
             text-indent: 0.6em;
             color: var(--crimson);
@@ -93,8 +93,8 @@
         /* スクロール連動フェードインアニメーション */
         .reveal {
             opacity: 0;
-            transform: translateY(30px);
-            transition: all 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+            transform: translateY(20px);
+            transition: all 1s cubic-bezier(0.22, 1, 0.36, 1);
         }
         .reveal.active {
             opacity: 1;
@@ -108,20 +108,20 @@
         }
 
         .section-title {
-            font-size: clamp(1.5rem, 5vw, 2.5rem);
+            font-size: clamp(1.5rem, 4vw, 2rem);
             font-family: 'Orbitron', sans-serif;
             text-align: center;
-            margin-bottom: 5rem;
+            margin-bottom: 3rem;
             position: relative;
             letter-spacing: 0.3em;
         }
         .section-title::after {
             content: '';
             display: block;
-            width: 60px;
+            width: 40px;
             height: 1px;
             background: var(--crimson);
-            margin: 1.5rem auto;
+            margin: 1rem auto;
         }
 
         /* YouTubeコンテナ */
@@ -131,7 +131,7 @@
             height: 0;
             overflow: hidden;
             background: #000;
-            box-shadow: 0 0 50px rgba(185, 28, 28, 0.1);
+            box-shadow: 0 0 40px rgba(185, 28, 28, 0.1);
         }
 
         .video-container iframe {
@@ -139,20 +139,20 @@
             top: 0; left: 0; width: 100%; height: 100%;
         }
 
-        /* トラックアイテムのホバーエフェクト */
+        /* トラックアイテム */
         .track-item {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 2rem 2.5rem;
-            transition: all 0.5s ease;
+            padding: 1.5rem 2rem;
+            transition: all 0.4s ease;
             border-bottom: 1px solid rgba(255, 255, 255, 0.03);
             text-decoration: none;
             color: inherit;
         }
         .track-item:hover {
-            background: rgba(185, 28, 28, 0.15);
-            padding-left: 3.5rem;
+            background: rgba(185, 28, 28, 0.1);
+            padding-left: 2.5rem;
         }
 
         .track-number {
@@ -160,6 +160,16 @@
             font-style: italic;
             font-weight: 900;
             transform: skewX(-10deg);
+        }
+
+        /* モバイルメニューアニメーション */
+        #mobile-menu {
+            transition: opacity 0.4s ease, visibility 0.4s;
+        }
+        #mobile-menu.hidden-custom {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
         }
     </style>
 </head>
@@ -169,9 +179,11 @@
     <canvas id="rose-canvas"></canvas>
 
     <!-- Navigation -->
-    <nav id="navbar" class="fixed w-full z-[60] px-8 py-6 flex justify-between items-center transition-all duration-700">
-        <div class="text-3xl brand-logo text-red-700">REiRA</div>
-        <div class="hidden lg:flex space-x-12 font-orbitron text-[10px] tracking-[0.4em] font-bold">
+    <nav id="navbar" class="fixed w-full z-[100] px-6 py-4 flex justify-between items-center transition-all duration-700">
+        <div class="text-2xl brand-logo text-red-700 z-[110]">REiRA</div>
+        
+        <!-- PC用メニュー -->
+        <div class="hidden lg:flex space-x-10 font-orbitron text-[10px] tracking-[0.4em] font-bold">
             <a href="#home" class="hover:text-red-500 transition">HOME</a>
             <a href="#mv" class="hover:text-red-500 transition">MUSIC VIDEO</a>
             <a href="#tracks" class="hover:text-red-500 transition">TRACKS</a>
@@ -179,38 +191,55 @@
             <a href="#disc" class="hover:text-red-500 transition">DISCOGRAPHY</a>
             <a href="#links" class="hover:text-red-500 transition">LINKS</a>
         </div>
-        <div class="flex space-x-6 text-xl">
-            <a href="https://www.youtube.com/@reira_music" target="_blank" rel="noopener" class="hover:text-red-600 transition duration-500"><i class="fab fa-youtube"></i></a>
+
+        <!-- ハンバーガーボタン -->
+        <button id="menu-btn" class="lg:hidden text-2xl text-white z-[110] focus:outline-none">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <!-- モバイルオーバーレイメニュー -->
+        <div id="mobile-menu" class="hidden-custom fixed inset-0 bg-black/95 flex flex-col justify-center items-center space-y-8 z-[105] font-orbitron text-sm tracking-[0.5em]">
+            <a href="#home" class="mobile-link hover:text-red-500 transition">HOME</a>
+            <a href="#mv" class="mobile-link hover:text-red-500 transition">MUSIC VIDEO</a>
+            <a href="#tracks" class="mobile-link hover:text-red-500 transition">TRACKS</a>
+            <a href="#about" class="mobile-link hover:text-red-500 transition">ABOUT</a>
+            <a href="#disc" class="mobile-link hover:text-red-500 transition">DISCOGRAPHY</a>
+            <a href="#links" class="mobile-link hover:text-red-500 transition">LINKS</a>
+            <div class="flex space-x-8 pt-6 text-xl">
+                <a href="https://www.tiktok.com/@reira_music" target="_blank" class="text-white/50 hover:text-red-600"><i class="fab fa-tiktok"></i></a>
+                <a href="https://www.youtube.com/@reira_music" target="_blank" class="text-white/50 hover:text-red-600"><i class="fab fa-youtube"></i></a>
+                <a href="https://open.spotify.com/intl-ja/artist/2DzEGExZPV0OrSQbALBmwL" target="_blank" class="text-white/50 hover:text-red-600"><i class="fab fa-spotify"></i></a>
+            </div>
         </div>
     </nav>
 
     <!-- ① トップ画面 (Hero) -->
     <header id="home" class="hero-bg">
-        <div class="hero-content relative z-10 w-full flex flex-col items-center">
+        <div class="hero-content relative z-10 w-full flex flex-col items-center px-4">
             <div class="hero-subtitle">AI ROCK ARTIST</div>
             <h1 class="hero-title brand-logo">REiRA</h1>
             
-            <div class="flex justify-center space-x-12 mt-20 text-2xl text-white/30">
+            <div class="flex justify-center space-x-10 mt-16 text-2xl text-white/30">
                 <a href="https://www.tiktok.com/@reira_music" target="_blank" rel="noopener" class="hover:text-red-600 transition duration-700 hover:scale-125"><i class="fab fa-tiktok"></i></a>
                 <a href="https://www.youtube.com/@reira_music" target="_blank" rel="noopener" class="hover:text-red-600 transition duration-700 hover:scale-125"><i class="fab fa-youtube"></i></a>
                 <a href="https://open.spotify.com/intl-ja/artist/2DzEGExZPV0OrSQbALBmwL" target="_blank" rel="noopener" class="hover:text-red-600 transition duration-700 hover:scale-125"><i class="fab fa-spotify"></i></a>
             </div>
         </div>
-        <div class="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center opacity-20">
-            <span class="font-orbitron text-[9px] tracking-[1em] mb-4 text-white">SCROLL</span>
-            <div class="w-[1px] h-20 bg-gradient-to-b from-white to-transparent"></div>
+        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center opacity-20">
+            <span class="font-orbitron text-[8px] tracking-[1em] mb-2 text-white">SCROLL</span>
+            <div class="w-[1px] h-12 bg-gradient-to-b from-white to-transparent"></div>
         </div>
     </header>
 
     <main class="relative z-10">
 
         <!-- ② & ③ Music Videos -->
-        <section id="mv" class="max-w-7xl mx-auto px-6 py-40 space-y-72">
+        <section id="mv" class="max-w-6xl mx-auto px-6 py-20 space-y-24 md:space-y-32">
             <!-- 01 紅蓮ノ閃光 -->
             <div class="reveal group">
-                <div class="flex flex-col md:flex-row items-baseline mb-16 space-y-4 md:space-y-0 md:space-x-10">
-                    <h2 class="brand-logo text-5xl md:text-7xl text-red-800 border-l-4 border-red-800 pl-8">紅蓮ノ閃光</h2>
-                    <span class="font-orbitron text-gray-700 tracking-[0.5em] text-sm uppercase">Crimson Velocity</span>
+                <div class="flex flex-col md:flex-row items-baseline mb-8 space-y-2 md:space-y-0 md:space-x-8 text-left">
+                    <h2 class="brand-logo text-4xl md:text-6xl text-red-800 border-l-4 border-red-800 pl-6">紅蓮ノ閃光</h2>
+                    <span class="font-orbitron text-gray-700 tracking-[0.5em] text-xs md:text-sm">Crimson Velocity</span>
                 </div>
                 <div class="relative">
                     <div class="video-container rounded-sm overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-1000">
@@ -220,10 +249,10 @@
             </div>
 
             <!-- 02 紅蓮ノ方舟 -->
-            <div class="reveal group flex flex-col items-end">
-                <div class="flex flex-col md:flex-row-reverse items-baseline mb-16 space-y-4 md:space-y-0 md:space-x-reverse md:space-x-10 text-right w-full">
-                    <h2 class="brand-logo text-5xl md:text-7xl text-red-800 border-r-4 border-red-800 pr-8">紅蓮ノ方舟</h2>
-                    <span class="font-orbitron text-gray-700 tracking-[0.5em] text-sm uppercase">Crimson Velocity Ⅱ</span>
+            <div class="reveal group">
+                <div class="flex flex-col md:flex-row items-baseline mb-8 space-y-2 md:space-y-0 md:space-x-8 text-left">
+                    <h2 class="brand-logo text-4xl md:text-6xl text-red-800 border-l-4 border-red-800 pl-6">紅蓮ノ方舟</h2>
+                    <span class="font-orbitron text-gray-700 tracking-[0.5em] text-xs md:text-sm">Crimson Velocity Ⅱ</span>
                 </div>
                 <div class="relative w-full">
                     <div class="video-container rounded-sm overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-1000">
@@ -234,81 +263,76 @@
         </section>
 
         <!-- ④ Popular Tracks -->
-        <section id="tracks" class="max-w-4xl mx-auto px-6 py-40">
+        <section id="tracks" class="max-w-4xl mx-auto px-6 py-20">
             <div class="reveal">
                 <h2 class="section-title">POPULAR TRACKS</h2>
                 <div class="glass-morphism rounded-sm overflow-hidden border border-white/5 shadow-2xl">
-                    
                     <!-- 01 -->
                     <a href="https://open.spotify.com/intl-ja/artist/2DzEGExZPV0OrSQbALBmwL" target="_blank" rel="noopener" class="track-item group">
-                        <div class="flex items-center space-x-10 md:space-x-14">
-                            <span class="track-number text-red-700 text-3xl md:text-4xl">01</span>
+                        <div class="flex items-center space-x-6 md:space-x-12">
+                            <span class="track-number text-red-700 text-2xl md:text-4xl">01</span>
                             <div>
-                                <h3 class="text-xl md:text-2xl font-bold tracking-widest group-hover:text-red-500 transition">紅蓮ノ閃光 - Crimson Velocity -</h3>
-                                <p class="text-[10px] text-gray-500 mt-2 tracking-[0.1em] font-light italic">1st Album “Eternal Frame”</p>
+                                <h3 class="text-lg md:text-xl font-bold tracking-widest group-hover:text-red-500 transition">紅蓮ノ閃光 - Crimson Velocity -</h3>
+                                <p class="text-[9px] text-gray-500 mt-1 tracking-[0.1em] font-light italic">1st Album “Eternal Frame”</p>
                             </div>
                         </div>
-                        <i class="fas fa-external-link-alt text-xs text-red-950 group-hover:text-red-600 transition duration-500"></i>
+                        <i class="fas fa-external-link-alt text-[10px] text-red-950 group-hover:text-red-600 transition duration-500"></i>
                     </a>
-
                     <!-- 02 -->
                     <a href="https://open.spotify.com/intl-ja/artist/2DzEGExZPV0OrSQbALBmwL" target="_blank" rel="noopener" class="track-item group">
-                        <div class="flex items-center space-x-10 md:space-x-14">
-                            <span class="track-number text-red-700 text-3xl md:text-4xl">02</span>
+                        <div class="flex items-center space-x-6 md:space-x-12">
+                            <span class="track-number text-red-700 text-2xl md:text-4xl">02</span>
                             <div>
-                                <h3 class="text-xl md:text-2xl font-bold tracking-widest group-hover:text-red-500 transition">紅蓮ノ方舟 - Crimson VelocityⅡ -</h3>
-                                <p class="text-[10px] text-gray-500 mt-2 tracking-[0.1em] font-light italic">4th Album “Noir Radiance”</p>
+                                <h3 class="text-lg md:text-xl font-bold tracking-widest group-hover:text-red-500 transition">紅蓮ノ方舟 - Crimson VelocityⅡ -</h3>
+                                <p class="text-[10px] text-gray-500 mt-1 tracking-[0.1em] font-light italic">4th Album “Noir Radiance”</p>
                             </div>
                         </div>
-                        <i class="fas fa-external-link-alt text-xs text-red-950 group-hover:text-red-600 transition duration-500"></i>
+                        <i class="fas fa-external-link-alt text-[10px] text-red-950 group-hover:text-red-600 transition duration-500"></i>
                     </a>
-
                     <!-- 03 -->
                     <a href="https://open.spotify.com/intl-ja/artist/2DzEGExZPV0OrSQbALBmwL" target="_blank" rel="noopener" class="track-item group">
-                        <div class="flex items-center space-x-10 md:space-x-14">
-                            <span class="track-number text-red-700 text-3xl md:text-4xl">03</span>
+                        <div class="flex items-center space-x-6 md:space-x-12">
+                            <span class="track-number text-red-700 text-2xl md:text-4xl">03</span>
                             <div>
-                                <h3 class="text-xl md:text-2xl font-bold tracking-widest group-hover:text-red-500 transition">燈彩ノ現実 - Prism Reality -</h3>
+                                <h3 class="text-lg md:text-xl font-bold tracking-widest group-hover:text-red-500 transition">燈彩ノ現実 - Prism Reality -</h3>
                                 <p class="text-[10px] text-gray-500 mt-2 tracking-[0.1em] font-light italic">4th Album “Noir Radiance”</p>
                             </div>
                         </div>
-                        <i class="fas fa-external-link-alt text-xs text-red-950 group-hover:text-red-600 transition duration-500"></i>
+                        <i class="fas fa-external-link-alt text-[10px] text-red-950 group-hover:text-red-600 transition duration-500"></i>
                     </a>
-
                     <!-- 04 -->
                     <a href="https://open.spotify.com/intl-ja/artist/2DzEGExZPV0OrSQbALBmwL" target="_blank" rel="noopener" class="track-item group">
-                        <div class="flex items-center space-x-10 md:space-x-14">
-                            <span class="track-number text-red-700 text-3xl md:text-4xl">04</span>
+                        <div class="flex items-center space-x-6 md:space-x-12">
+                            <span class="track-number text-red-700 text-2xl md:text-4xl">04</span>
                             <div>
-                                <h3 class="text-xl md:text-2xl font-bold tracking-widest group-hover:text-red-500 transition">Shining Abyss</h3>
-                                <p class="text-[10px] text-gray-500 mt-2 tracking-[0.1em] font-light italic">1st Album “Eternal Frame”</p>
+                                <h3 class="text-lg md:text-xl font-bold tracking-widest group-hover:text-red-500 transition">Shining Abyss</h3>
+                                <p class="text-[10px] text-gray-500 mt-1 tracking-[0.1em] font-light italic">1st Album “Eternal Frame”</p>
                             </div>
                         </div>
-                        <i class="fas fa-external-link-alt text-xs text-red-950 group-hover:text-red-600 transition duration-500"></i>
+                        <i class="fas fa-external-link-alt text-[10px] text-red-950 group-hover:text-red-600 transition duration-500"></i>
                     </a>
-
                     <!-- 05 -->
                     <a href="https://open.spotify.com/intl-ja/artist/2DzEGExZPV0OrSQbALBmwL" target="_blank" rel="noopener" class="track-item group">
-                        <div class="flex items-center space-x-10 md:space-x-14">
-                            <span class="track-number text-red-700 text-3xl md:text-4xl">05</span>
+                        <div class="flex items-center space-x-6 md:space-x-12">
+                            <span class="track-number text-red-700 text-2xl md:text-4xl">05</span>
                             <div>
-                                <h3 class="text-xl md:text-2xl font-bold tracking-widest group-hover:text-red-500 transition uppercase">Radiant Prayer</h3>
-                                <p class="text-[10px] text-gray-500 mt-2 tracking-[0.1em] font-light italic">1st Album “Eternal Frame”</p>
+                                <h3 class="text-lg md:text-xl font-bold tracking-widest group-hover:text-red-500 transition uppercase">Radiant Prayer</h3>
+                                <p class="text-[10px] text-gray-500 mt-1 tracking-[0.1em] font-light italic">1st Album “Eternal Frame”</p>
                             </div>
                         </div>
-                        <i class="fas fa-external-link-alt text-xs text-red-950 group-hover:text-red-600 transition duration-500"></i>
+                        <i class="fas fa-external-link-alt text-[10px] text-red-950 group-hover:text-red-600 transition duration-500"></i>
                     </a>
                 </div>
             </div>
         </section>
 
         <!-- ⑤ About REiRA -->
-        <section id="about" class="bg-[#030303] py-56">
-            <div class="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-24 items-center">
-                <div class="reveal order-2 md:order-1 space-y-16">
+        <section id="about" class="bg-[#030303]/50 py-20">
+            <div class="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12 md:gap-16 items-center">
+                <div class="reveal order-2 md:order-1 space-y-8">
                     <h2 class="section-title !text-left !m-0">ABOUT REiRA</h2>
-                    <div class="font-serif italic text-xl leading-relaxed text-white/60 space-y-10">
-                        <p class="reveal text-white font-bold text-2xl md:text-3xl">
+                    <div class="font-serif italic text-xl leading-relaxed text-white/60 space-y-6">
+                        <p class="reveal text-white font-bold text-xl md:text-2xl">
                             AIから生まれた新時代のロックアーティスト
                         </p>
                         <p class="reveal">
@@ -322,87 +346,86 @@
                     </div>
                 </div>
                 <div class="reveal order-1 md:order-2">
-                    <div class="relative p-6 border border-red-900/20 group">
-                        <!-- Aboutセクション専用の画像ファイル：about.jpg -->
-                        <img src="about.jpg" alt="REiRA About Image" class="w-full grayscale brightness-50 group-hover:grayscale-0 group-hover:brightness-100 transition duration-1000" onerror="this.src='https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=2070&auto=format&fit=crop'">
-                        <div class="absolute -top-6 -left-6 w-24 h-24 border-t border-l border-red-800/50"></div>
-                        <div class="absolute -bottom-6 -right-6 w-24 h-24 border-b border-r border-red-800/50"></div>
+                    <div class="relative p-4 border border-red-900/20 group">
+                        <img src="about.jpg" alt="REiRA About Image" class="w-full brightness-90 group-hover:brightness-100 transition duration-1000" onerror="this.src='https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=2070&auto=format&fit=crop'">
+                        <div class="absolute -top-4 -left-4 w-16 h-16 border-t border-l border-red-800/50"></div>
+                        <div class="absolute -bottom-4 -right-4 w-16 h-16 border-b border-r border-red-800/50"></div>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- ⑥ Discography -->
-        <section id="disc" class="max-w-7xl mx-auto px-6 py-40">
+        <section id="disc" class="max-w-7xl mx-auto px-6 py-20">
             <div class="reveal">
                 <h2 class="section-title">DISCOGRAPHY</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 px-4 text-left">
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 md:gap-12 px-2 text-left">
                     <!-- Noir Radiance -->
                     <a href="https://open.spotify.com/intl-ja/album/7Af68VTLCHE9KuRleFsMPh" target="_blank" rel="noopener" class="reveal group">
-                        <div class="relative overflow-hidden mb-8 shadow-2xl border border-white/5 aspect-square">
-                            <img src="album4.jpg" alt="Noir Radiance" class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition duration-1000" onerror="this.src='https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?q=80&w=1000&auto=format&fit=crop'">
+                        <div class="relative overflow-hidden mb-4 shadow-2xl border border-white/5 aspect-square">
+                            <img src="album4.jpg" alt="Noir Radiance" class="w-full h-full object-cover group-hover:scale-105 transition duration-1000" onerror="this.src='https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?q=80&w=1000&auto=format&fit=crop'">
                             <div class="absolute inset-0 bg-red-900/10 opacity-0 group-hover:opacity-100 transition"></div>
                         </div>
-                        <h3 class="brand-logo text-xl md:text-2xl group-hover:text-red-600 transition">Noir Radiance</h3>
-                        <p class="text-[10px] text-red-800 font-bold mt-2 tracking-[0.2em] uppercase">4th Album / 2025.11.25</p>
-                    </a>
-                     <!-- Halloween Anthem -->
-                    <a href="https://open.spotify.com/intl-ja/album/7zkZ41BXVRut6ucIjbbR9M" target="_blank" rel="noopener" class="reveal group" style="transition-delay: 100ms;">
-                        <div class="relative overflow-hidden mb-8 shadow-2xl border border-white/5 aspect-square">
-                            <img src="album3.jpg" alt="Halloween Anthem" class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition duration-1000" onerror="this.src='https://images.unsplash.com/photo-1509248961158-e54f6934749c?q=80&w=1000&auto=format&fit=crop'">
-                        </div>
-                        <h3 class="brand-logo text-xl md:text-2xl group-hover:text-red-600 transition">Halloween Anthem</h3>
-                        <p class="text-[10px] text-red-800 font-bold mt-2 tracking-[0.2em] uppercase">3rd Album / 2025.10.10</p>
+                        <h3 class="brand-logo text-base md:text-xl group-hover:text-red-600 transition">Noir Radiance</h3>
+                        <p class="text-[8px] md:text-[10px] text-red-800 font-bold mt-1 tracking-[0.2em] uppercase">4th Album / 2025.11.25</p>
                     </a>
                     <!-- YOKU -->
-                    <a href="https://open.spotify.com/intl-ja/album/4yrTn6VMTHb3WQ1xkNz63D" target="_blank" rel="noopener" class="reveal group" style="transition-delay: 200ms;">
-                        <div class="relative overflow-hidden mb-8 shadow-2xl border border-white/5 aspect-square">
-                            <img src="album2.jpg" alt="YOKU" class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition duration-1000" onerror="this.src='https://images.unsplash.com/photo-1493225255756-d9584f8606e9?q=80&w=1000&auto=format&fit=crop'">
+                    <a href="https://open.spotify.com/intl-ja/album/4yrTn6VMTHb3WQ1xkNz63D" target="_blank" rel="noopener" class="reveal group" style="transition-delay: 100ms;">
+                        <div class="relative overflow-hidden mb-4 shadow-2xl border border-white/5 aspect-square">
+                            <img src="album3.jpg" alt="YOKU" class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition duration-1000" onerror="this.src='https://images.unsplash.com/photo-1493225255756-d9584f8606e9?q=80&w=1000&auto=format&fit=crop'">
                         </div>
-                        <h3 class="brand-logo text-xl md:text-2xl group-hover:text-red-600 transition">YOKU</h3>
-                        <p class="text-[10px] text-red-800 font-bold mt-2 tracking-[0.2em] uppercase">2nd Album / 2025.10.03</p>
+                        <h3 class="brand-logo text-base md:text-xl group-hover:text-red-600 transition">YOKU</h3>
+                        <p class="text-[8px] md:text-[10px] text-red-800 font-bold mt-1 tracking-[0.2em] uppercase">3rd Album / 2025.10.03</p>
+                    </a>
+                    <!-- Halloween Anthem -->
+                    <a href="https://open.spotify.com/intl-ja/album/7zkZ41BXVRut6ucIjbbR9M" target="_blank" rel="noopener" class="reveal group" style="transition-delay: 200ms;">
+                        <div class="relative overflow-hidden mb-4 shadow-2xl border border-white/5 aspect-square">
+                            <img src="album2.jpg" alt="Halloween Anthem" class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition duration-1000" onerror="this.src='https://images.unsplash.com/photo-1509248961158-e54f6934749c?q=80&w=1000&auto=format&fit=crop'">
+                        </div>
+                        <h3 class="brand-logo text-base md:text-xl group-hover:text-red-600 transition">Halloween Anthem</h3>
+                        <p class="text-[8px] md:text-[10px] text-red-800 font-bold mt-1 tracking-[0.2em] uppercase">2nd Album / 2025.10.10</p>
                     </a>
                     <!-- Eternal Frame -->
                     <a href="https://open.spotify.com/intl-ja/album/2a4rcDYmdgQGQeSNw1MBog" target="_blank" rel="noopener" class="reveal group" style="transition-delay: 300ms;">
-                        <div class="relative overflow-hidden mb-8 shadow-2xl border border-white/5 aspect-square">
+                        <div class="relative overflow-hidden mb-4 shadow-2xl border border-white/5 aspect-square">
                             <img src="album1.jpg" alt="Eternal Frame" class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition duration-1000" onerror="this.src='https://images.unsplash.com/photo-1459749411177-042180ce673c?q=80&w=1000&auto=format&fit=crop'">
                         </div>
-                        <h3 class="brand-logo text-xl md:text-2xl group-hover:text-red-600 transition">Eternal Frame</h3>
-                        <p class="text-[10px] text-red-800 font-bold mt-2 tracking-[0.2em] uppercase">1st Album / 2025.09.18</p>
+                        <h3 class="brand-logo text-base md:text-xl group-hover:text-red-600 transition">Eternal Frame</h3>
+                        <p class="text-[8px] md:text-[10px] text-red-800 font-bold mt-1 tracking-[0.2em] uppercase">1st Album / 2025.09.18</p>
                     </a>
                 </div>
             </div>
         </section>
 
         <!-- ⑦ LINKS -->
-        <section id="links" class="py-56 border-t border-white/5 bg-black text-center">
-            <h2 class="section-title !mb-20">LINKS</h2>
-            <div class="reveal flex flex-wrap justify-center gap-20">
+        <section id="links" class="py-20 border-t border-white/5 bg-black text-center">
+            <h2 class="section-title !mb-12">LINKS</h2>
+            <div class="reveal flex flex-wrap justify-center gap-12 md:gap-20">
                 <a href="https://www.tiktok.com/@reira_music" target="_blank" rel="noopener" class="group flex flex-col items-center">
-                    <i class="fab fa-tiktok text-4xl text-white/10 group-hover:text-red-700 transition duration-700 mb-6"></i>
-                    <span class="font-orbitron text-[10px] tracking-[0.5em] opacity-0 group-hover:opacity-100 transition uppercase">TikTok</span>
+                    <i class="fab fa-tiktok text-3xl text-white/10 group-hover:text-red-700 transition duration-700 mb-4"></i>
+                    <span class="font-orbitron text-[9px] tracking-[0.5em] opacity-0 group-hover:opacity-100 transition uppercase text-white/50">TikTok</span>
                 </a>
                 <a href="https://www.youtube.com/@reira_music" target="_blank" rel="noopener" class="group flex flex-col items-center">
-                    <i class="fab fa-youtube text-4xl text-white/10 group-hover:text-red-700 transition duration-700 mb-6"></i>
-                    <span class="font-orbitron text-[10px] tracking-[0.5em] opacity-0 group-hover:opacity-100 transition uppercase">YouTube</span>
+                    <i class="fab fa-youtube text-3xl text-white/10 group-hover:text-red-700 transition duration-700 mb-4"></i>
+                    <span class="font-orbitron text-[9px] tracking-[0.5em] opacity-0 group-hover:opacity-100 transition uppercase text-white/50">YouTube</span>
                 </a>
                 <a href="https://open.spotify.com/intl-ja/artist/2DzEGExZPV0OrSQbALBmwL" target="_blank" rel="noopener" class="group flex flex-col items-center">
-                    <i class="fab fa-spotify text-4xl text-white/10 group-hover:text-red-700 transition duration-700 mb-6"></i>
-                    <span class="font-orbitron text-[10px] tracking-[0.5em] opacity-0 group-hover:opacity-100 transition uppercase">Spotify</span>
+                    <i class="fab fa-spotify text-3xl text-white/10 group-hover:text-red-700 transition duration-700 mb-4"></i>
+                    <span class="font-orbitron text-[9px] tracking-[0.5em] opacity-0 group-hover:opacity-100 transition uppercase text-white/50">Spotify</span>
                 </a>
             </div>
         </section>
 
     </main>
 
-    <footer class="py-24 text-center bg-black border-t border-white/5">
-        <div class="text-3xl brand-logo text-red-950 mb-6">REiRA</div>
-        <div class="font-orbitron text-[8px] text-white/10 tracking-[1em] mb-4 uppercase">Official Digital Archive</div>
+    <footer class="py-16 text-center bg-black border-t border-white/5">
+        <div class="text-2xl brand-logo text-red-950 mb-4">REiRA</div>
+        <div class="font-orbitron text-[8px] text-white/10 tracking-[1em] mb-3 uppercase">Official Digital Archive</div>
         <p class="text-[8px] text-white/5 font-light">&copy; 2026 AI MUSIC ENTERTAINMENT.</p>
     </footer>
 
     <script>
-        // --- 薔薇の花びらアニメーション (Canvas) ---
+        // --- 薔薇の花びらアニメーション ---
         const canvas = document.getElementById('rose-canvas');
         const ctx = canvas.getContext('2d');
         let petals = [];
@@ -415,18 +438,16 @@
         resize();
 
         class Petal {
-            constructor() {
-                this.init();
-            }
+            constructor() { this.init(); }
             init() {
                 this.x = Math.random() * canvas.width;
                 this.y = -20;
-                this.size = Math.random() * 4 + 2;
-                this.speed = Math.random() * 1.2 + 0.5;
+                this.size = Math.random() * 3 + 2;
+                this.speed = Math.random() * 1 + 0.5;
                 this.oscillation = Math.random() * 0.02;
                 this.oscOffset = Math.random() * Math.PI * 2;
                 this.rotation = Math.random() * 360;
-                this.rotSpeed = Math.random() * 1.5 - 0.75;
+                this.rotSpeed = Math.random() * 1 - 0.5;
                 this.opacity = Math.random() * 0.4 + 0.1;
             }
             update() {
@@ -448,7 +469,7 @@
             }
         }
 
-        for (let i = 0; i < 70; i++) petals.push(new Petal());
+        for (let i = 0; i < 50; i++) petals.push(new Petal());
 
         function animatePetals() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -460,13 +481,37 @@
         }
         animatePetals();
 
-        // --- スクロール連動：表示領域に入ったらactiveクラスを付与 ---
+        // --- モバイルメニュー制御 ---
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIcon = menuBtn.querySelector('i');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        function toggleMenu() {
+            const isHidden = mobileMenu.classList.contains('hidden-custom');
+            if (isHidden) {
+                mobileMenu.classList.remove('hidden-custom');
+                menuIcon.classList.replace('fa-bars', 'fa-times');
+                document.body.style.overflow = 'hidden';
+            } else {
+                mobileMenu.classList.add('hidden-custom');
+                menuIcon.classList.replace('fa-times', 'fa-bars');
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        menuBtn.addEventListener('click', toggleMenu);
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', toggleMenu);
+        });
+
+        // --- スクロール連動 ---
         function reveal() {
             const reveals = document.querySelectorAll('.reveal');
             reveals.forEach(r => {
                 const windowHeight = window.innerHeight;
                 const revealTop = r.getBoundingClientRect().top;
-                const revealPoint = 100;
+                const revealPoint = 80;
                 if (revealTop < windowHeight - revealPoint) {
                     r.classList.add('active');
                 }
@@ -475,26 +520,21 @@
         window.addEventListener('scroll', reveal);
         reveal();
 
-        // --- ナビゲーションバーの背景透過制御 ---
+        // --- ナビゲーションバーの変化 ---
         window.addEventListener('scroll', () => {
             const nav = document.getElementById('navbar');
             if (window.scrollY > 50) {
                 nav.style.backgroundColor = 'rgba(5, 5, 5, 0.98)';
-                nav.style.paddingTop = '1rem';
-                nav.style.paddingBottom = '1rem';
+                nav.style.paddingTop = '0.8rem';
+                nav.style.paddingBottom = '0.8rem';
                 nav.style.boxShadow = '0 0 40px rgba(0,0,0,0.5)';
             } else {
                 nav.style.backgroundColor = 'transparent';
-                nav.style.paddingTop = '1.5rem';
-                nav.style.paddingBottom = '1.5rem';
+                nav.style.paddingTop = '1rem';
+                nav.style.paddingBottom = '1rem';
                 nav.style.boxShadow = 'none';
             }
         });
     </script>
 </body>
-
 </html>
-
-
-
-
